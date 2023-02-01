@@ -16,7 +16,9 @@ app.post('/movies', async (req, res) => {
         const newMovie = await Movie.create(payload)
         return res.status(201).json(newMovie)
     } catch (error) {
-        console.log(error)
+        if(error.name === 'ValidationError') {
+            return res.status(422).json({message: "Validation error. Check your input."})
+        }
         return res.status(500).json({message: "Error while creating movie"})
     }
 })

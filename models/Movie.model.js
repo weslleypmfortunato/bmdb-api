@@ -9,7 +9,7 @@ const movieSchema = new Schema({
     },
     year: {
         type: Number,
-        required: true
+        required: [true, 'O ano é obrigatório.']
     },
     director: {
         type: Array,
@@ -32,6 +32,12 @@ const movieSchema = new Schema({
     },
     countries: {
         type: Array,
+        validate: {
+            validator: function(value) {
+               return value.includes('Brasil')
+            },
+            message: () => 'Brasil deve estar presente.'
+        },
         required: true
     }
 }, { timestamps: true })

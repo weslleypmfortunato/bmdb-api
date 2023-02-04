@@ -18,7 +18,7 @@ starsRouter.post('/', async (req, res) => {
 
 starsRouter.get('/', async (req, res) => {
     try {
-        const stars = await Star.find({})
+        const stars = await Star.find({}).populate('movies', 'title -_id')
         return res.status(200).json(stars)
     } catch (error) {
         return res.status(500).json({message: "Internal server error"})

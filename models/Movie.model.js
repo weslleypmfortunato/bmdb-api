@@ -19,10 +19,14 @@ const movieSchema = new Schema({
         type: String,
         required: true
     },
-    cast: {
-        type: Array,
-        required: true
-    },
+    cast: [{
+        type: Schema.Types.ObjectId,
+        ref: "Star"
+    }],
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
+    }],
     poster: {
         type: String
     },

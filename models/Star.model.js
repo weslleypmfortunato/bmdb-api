@@ -24,9 +24,10 @@ const starSchema = new Schema({
     picture: {
         type: String
     },
-    movies: {
-        type: Array
-    }
+    movies: [{
+        type: Schema.Types.ObjectId,
+        ref: "Movie"
+    }]
 }, { timestamps: true })
 
 export default model('Star', starSchema)

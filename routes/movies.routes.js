@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import Movie from '../models/Movie.model.js'
 import Star from '../models/Star.model.js'
+import fileUpload from '../config/cloudinary.config.js'
 
 const moviesRouter = Router()
 
@@ -10,6 +11,7 @@ moviesRouter.post('/', async (req, res) => {
         const newMovie = await Movie.create(payload)
         return res.status(201).json(newMovie)
     } catch (error) {
+        console.log(error)
         if(error.name === 'ValidationError') {
             return res.status(422).json({message: "Validation error. Check your input."})
         }
@@ -25,7 +27,6 @@ moviesRouter.get('/', async (req, res) => {
     }
     try {
         const movies = await Movie.find(query)
-                        .select({ title: 1, year: 1, _id: 0})
                         .populate('cast' , 'name wikipediaLink -_id')
                         .sort(order)
         return res.status(200).json(movies)
@@ -79,6 +80,10 @@ moviesRouter.delete('/:id', async (req, res) => {
     } catch (error) {
         return res.status(500).json({message: "Internal server error"})
     }
+})
+
+moviesRouter.post("/upload", fileUpload.single('moviePoster'), (req, res) => {
+    res.status(201).json({url: req.file.path})
 })
 
 export default moviesRouter
